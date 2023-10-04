@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>calCulator</title>
+    <style>
+      * {
+        margin: 0%;
+        padding: 0%;
+      }
+      .bac {
+        background-image: linear-gradient(
+          to top left,
+          rgb(56, 173, 206),
+          rgb(10, 64, 118)
+        );
+
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .main {
+        height: 70%;
+        width: 50%;
+        background-color: rgba(241, 235, 215, 0.4);
+
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .inputBox {
+        border: none;
+        margin-top: 15px;
+        height: 20%;
+        width: 95%;
+        background-color: rgba(255, 255, 255, 0.894);
+        opacity: 100%;
+        border-radius: 10px;
+        cursor: text;
+        font-size: 3.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: right;
+        white-space: nowrap; /* Prevent text from wrapping by default */
+        overflow: hidden; /* Hide overflowing text */
+        text-overflow: ellipsis; /* Display ellipsis (...) for overflow */
+        padding: 10px;
+      }
+
+      .inputBox.overflow {
+        white-space: pre-wrap; /* Allow text to wrap */
+        overflow: visible; /* Show overflowing text */
+        text-overflow: unset; /* Disable ellipsis */
+
+        font-size: 2rem; /* Smaller font size for overflow */
+        line-height: 2rem; /* Adjust line height for wrapped text */
+        max-height: 150px; /* Maximum height for the input box */
+      }
+      .buttonBox {
+        display: inline;
+        position: relative;
+        bottom: 0%;
+      }
+
+      button {
+        border: none;
+        padding: 1rem 1.2rem;
+        font-size: 1.5rem;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.894);
+      }
+
+      .inputBox:hover {
+        box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.894);
+      }
+      .button {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-area: 100%;
+        grid-gap: 15px;
+      }
+
+      .special {
+        background-color: rgba(53, 140, 217, 0.932);
+      }
+
+      .special:hover {
+        box-shadow: 0px 0px 0px 2px rgba(53, 140, 217, 0.932);
+      }
+
+      /* Responsiveness */
+
+      @media screen and (max-width: 768px) {
+        /* Adjust styles for screens up to 768px wide */
+
+        .main {
+          width: 80%; /* Reduce the width of the main container */
+        }
+
+        .inputBox {
+          font-size: 2rem; /* Reduce the font size for the display */
+        }
+
+        .buttonBox {
+          padding: 10px; /* Add some spacing around the buttons */
+        }
+
+        button {
+          font-size: 1.2rem; /* Reduce the font size for the buttons */
+          padding: 0.8rem 1rem; /* Adjust button padding */
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="bac">
+      <div class="main">
+        <div class="inputBox" id="display"></div>
+
+        <div class="buttonBox">
+          <div class="button">
+            <button class="special">C</button>
+            <button class="special">%</button>
+            <button class="special">Bac</button>
+            <button class="special">/</button>
+
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button class="special">*</button>
+
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button class="special">-</button>
+
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button class="special">+</button>
+
+            <button>00</button>
+            <button>0</button>
+            <button>.</button>
+            <button class="special">=</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- JavaScript -->
+
+  <script>
+    let display = document.getElementById("display"); // Get the display element by ID
+    let buttons = document.getElementsByTagName("button");
+
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener("click", function () {
+        let buttonText = buttons[i].innerText;
+
+        // Check if the button is 'C' (clear) and clear the display if true
+        if (buttonText === "C") {
+          display.textContent = "";
+        } else if (buttonText === "=") {
+          // Calculate the result when '=' is clicked
+          try {
+            display.textContent = eval(display.textContent);
+          } catch (error) {
+            display.textContent = "Error";
+          }
+        } else if (buttonText === "Bac") {
+          display.textContent = display.textContent.slice(0, -1);
+        } else if (buttonText === "%") {
+          // Calculate the percentage
+          try {
+            display.textContent = (eval(display.textContent) / 100).toString();
+          } catch (error) {
+            display.textContent = "Error";
+          }
+        } else {
+          // Append the button's text to the display
+          display.textContent += buttonText;
+        }
+
+        display.style.textAlign = "right";
+      });
+    }
+
+    // Add an event listener to the document to listen for key presses
+    document.addEventListener("keydown", function (event) {
+      // Get the pressed key
+      const key = event.key;
+
+      // Check which key was pressed and perform the corresponding action
+      switch (key) {
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case ".":
+          // Append the key's text to the display
+          display.textContent += key;
+          break;
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+          // Append the operator to the display
+          display.textContent += key;
+          break;
+        case "Enter":
+          // Calculate the result when Enter key is pressed
+          try {
+            display.textContent = eval(display.textContent);
+          } catch (error) {
+            display.textContent = "Error";
+          }
+          break;
+        case "Backspace":
+          // Handle backspace key to delete the last character
+          display.textContent = display.textContent.slice(0, -1);
+          break;
+        case "c":
+        case "C":
+          // Clear the display when 'C' key is pressed
+          display.textContent = "";
+          break;
+        case "%":
+          // Calculate the percentage when '%' key is pressed
+          try {
+            const currentDisplayValue = parseFloat(display.textContent);
+            if (!isNaN(currentDisplayValue)) {
+              display.textContent = (currentDisplayValue * 0.01).toString();
+            } else {
+              display.textContent = "Error";
+            }
+          } catch (error) {
+            display.textContent = "Error";
+          }
+          break;
+      }
+
+      display.style.textAlign = "right";
+    });
+  </script>
+</html>
